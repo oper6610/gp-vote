@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026工務大會-GP最佳發明獎投票</title>
+<meta property="og:title" content="2026工務大會-GP最佳發明獎投票">
+<meta property="og:description" content="選出你心中的技術之星！從 Top 10 精選 GP 中投出最佳 3 部，投票期間 4/10-4/15">
+<meta property="og:type" content="website">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+  :root{--gold:#F5A623;--gold-light:#FFF3D6;--gold-dark:#D4890A;--navy:#1B2A4A;--navy-light:#2D4373;--green:#2E7D32;--green-soft:#E8F5E9;--bg:#F7F4EE;--card-bg:#FFF;--text:#1B2A4A;--text-sec:#5A6A8A;--border:#E8E2D6;--shadow:0 2px 16px rgba(27,42,74,.08);--shadow-hover:0 8px 32px rgba(27,42,74,.14);--radius:16px}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+
+  /* HERO */
+  .hero{background:linear-gradient(135deg,var(--navy),var(--navy-light));color:#fff;padding:48px 24px 36px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:-60%;left:-20%;width:140%;height:200%;background:radial-gradient(ellipse,rgba(245,166,35,.15),transparent 70%);pointer-events:none}
+  .hero-badge{display:inline-block;background:var(--gold);color:var(--navy);font-weight:900;font-size:13px;padding:6px 18px;border-radius:100px;letter-spacing:2px;margin-bottom:16px}
+  .hero h1{font-size:clamp(26px,5vw,42px);font-weight:900;margin-bottom:12px;line-height:1.3}
+  .hero h1 span{color:var(--gold)}
+  .hero p{font-size:15px;opacity:.85;max-width:520px;margin:0 auto;line-height:1.7}
+  .hero .period{display:inline-block;background:rgba(255,255,255,.15);padding:8px 20px;border-radius:10px;margin-top:16px;font-weight:700;font-size:14px;letter-spacing:.5px}
+
+  /* RULES */
+  .rules-section{max-width:900px;margin:24px auto 0;padding:0 20px}
+  .rules-card{background:var(--card-bg);border-radius:var(--radius);padding:24px 32px;box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px 28px}
+  .rule-item{display:flex;align-items:start;gap:10px;font-size:13px;line-height:1.6;padding:4px 0}
+  .rule-item .icon{font-size:20px;flex-shrink:0;margin-top:1px}
+  .rule-item strong{color:var(--gold-dark)}
+
+  /* STICKY BAR */
+  .vote-bar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;transition:box-shadow .3s}
+  .vote-bar.scrolled{box-shadow:0 4px 20px rgba(0,0,0,.08)}
+  .vote-counter{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+  .counter-dots{display:flex;gap:6px}
+  .counter-dot{width:28px;height:28px;border-radius:50%;border:2.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text-sec);transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+  .counter-dot.filled{background:var(--gold);border-color:var(--gold);color:var(--navy);transform:scale(1.1)}
+  .refresh-btn{background:none;border:2px solid var(--border);color:var(--text-sec);padding:8px 16px;border-radius:100px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+  .refresh-btn:hover{border-color:var(--gold);color:var(--gold-dark);background:var(--gold-light)}
+  .refresh-btn .spin{display:inline-block;transition:transform .3s}
+  .refresh-btn:hover .spin{transform:rotate(180deg)}
+  .vote-bar-btn{background:var(--navy);color:#fff;border:none;padding:10px 28px;border-radius:100px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .2s;opacity:.4;pointer-events:none}
+  .vote-bar-btn.active{opacity:1;pointer-events:auto}
+  .vote-bar-btn.active:hover{background:var(--navy-light);transform:translateY(-1px)}
+
+  /* VOTER */
+  .voter-section{max-width:900px;margin:24px auto 0;padding:0 20px}
+  .voter-card{background:var(--card-bg);border-radius:var(--radius);padding:24px 28px;box-shadow:var(--shadow);display:flex;gap:16px;flex-wrap:wrap;align-items:start}
+  .voter-card .field{flex:1;min-width:160px}
+  .voter-card label{display:block;font-size:12px;font-weight:700;color:var(--text-sec);margin-bottom:6px}
+  .voter-card .hint{font-size:11px;color:var(--text-sec);margin-top:5px;opacity:.6;font-weight:400;line-height:1.4}
+  .voter-card input,.voter-card select{width:100%;padding:11px 14px;border:2px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;background:var(--bg);color:var(--text);transition:border-color .2s}
+  .voter-card select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%235A6A8A'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+  .voter-card input:focus,.voter-card select:focus{outline:none;border-color:var(--gold)}
+
+  /* INSTRUCTION */
+  .instruction{max-width:900px;margin:24px auto 0;padding:0 20px;text-align:center}
+  .instruction p{background:var(--gold-light);display:inline-block;padding:12px 24px;border-radius:100px;font-weight:700;font-size:14px;color:var(--gold-dark)}
+
+  /* CARDS */
+  .cards-container{max-width:900px;margin:20px auto 120px;padding:0 20px;display:flex;flex-direction:column;gap:24px}
+  .gp-card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:all .3s;border:3px solid transparent}
+  .gp-card:hover{box-shadow:var(--shadow-hover)}
+  .gp-card.selected{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold),var(--shadow-hover)}
+  .gp-card-header{background:linear-gradient(135deg,var(--gold),#F7C948);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .gp-card-header .gp-id{font-size:clamp(18px,3vw,24px);font-weight:900;color:var(--navy);white-space:nowrap}
+  .gp-card-header .gp-title{font-size:clamp(12px,2vw,14px);font-weight:700;color:var(--navy);opacity:.85;text-align:right;flex:1}
+  .gp-card-body{padding:20px 24px}
+  .gp-meta{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .gp-meta-tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px}
+  .gp-meta-tag.factory{background:var(--navy);color:#fff}
+  .gp-meta-tag.style{background:var(--bg);color:var(--text-sec)}
+  .gp-meta-tag.efficiency{background:var(--green-soft);color:var(--green)}
+  .gp-meta-tag.style-no{background:#EDE7F6;color:#5E35B1;font-size:11px}
+  .gp-video-container{width:100%;aspect-ratio:16/9;background:#0D1520;border-radius:12px;overflow:hidden;margin-bottom:16px;display:flex;align-items:center;justify-content:center}
+  .gp-video-container video{width:100%;height:100%;object-fit:contain}
+  .gp-video-container iframe{width:100%;height:100%;border:none}
+  .video-placeholder{text-align:center;color:#6B7FA3;padding:24px}
+  .video-placeholder .icon{font-size:48px;margin-bottom:10px;opacity:.5}
+  .video-placeholder p{font-size:13px;line-height:1.6}
+  .gp-desc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  @media(max-width:600px){.gp-desc-grid{grid-template-columns:1fr}}
+  .desc-block{background:var(--bg);border-radius:10px;padding:12px 14px}
+  .desc-block .label{font-size:11px;font-weight:700;color:var(--gold-dark);margin-bottom:4px}
+  .desc-block .content{font-size:13px;line-height:1.65}
+  .eff-line{display:flex;align-items:flex-start;margin-bottom:2px}
+  .eff-label{flex-shrink:0;white-space:nowrap;font-weight:700;font-size:13px}
+  .eff-label .c-red{color:#C0392B}
+  .eff-label .c-green{color:#2E7D32}
+  .eff-value{flex:1;font-size:13px;line-height:1.65}
+  .efficiency-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .vote-toggle{width:100%;padding:13px;border:2.5px solid var(--border);border-radius:12px;background:var(--bg);font-family:inherit;font-size:15px;font-weight:700;color:var(--text-sec);cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);display:flex;align-items:center;justify-content:center;gap:8px}
+  .vote-toggle:hover{border-color:var(--gold);color:var(--gold-dark);background:var(--gold-light)}
+  .vote-toggle.voted{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+  .vote-toggle.voted:hover{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff}
+  .vote-toggle.disabled{opacity:.35;pointer-events:none}
+  .vote-toggle .checkmark{width:22px;height:22px;border-radius:6px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center}
+  .vote-toggle.voted .checkmark{background:var(--navy);border-color:var(--navy)}
+  .vote-toggle.voted .checkmark svg{opacity:1}
+  .vote-toggle .checkmark svg{opacity:0;transition:opacity .2s}
+
+  /* MODALS */
+  .modal-overlay{position:fixed;inset:0;background:rgba(27,42,74,.6);backdrop-filter:blur(8px);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
+  .modal-overlay.show{display:flex}
+  .modal{background:#fff;border-radius:20px;max-width:520px;width:100%;padding:32px;text-align:center;animation:modalIn .3s ease-out}
+  @keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96)}}
+  .modal h2{font-size:22px;font-weight:900;margin-bottom:6px}
+  .modal .subtitle{color:var(--text-sec);font-size:14px;margin-bottom:20px}
+  .selected-list{text-align:left;margin-bottom:20px}
+  .selected-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--gold-light);border-radius:10px;margin-bottom:8px;font-weight:700;font-size:14px}
+  .selected-item .rank{width:26px;height:26px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:var(--navy);flex-shrink:0}
+  .modal-actions{display:flex;gap:12px;flex-wrap:wrap}
+  .modal-actions button{flex:1;min-width:140px;padding:13px;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;border:none;transition:all .2s}
+  .btn-submit{background:var(--navy);color:#fff}
+  .btn-submit:hover{background:var(--navy-light)}
+  .btn-submit:disabled{opacity:.5;pointer-events:none}
+  .btn-cancel{background:var(--bg);color:var(--text-sec);border:2px solid var(--border)!important}
+  .success-overlay{position:fixed;inset:0;background:rgba(27,42,74,.6);backdrop-filter:blur(8px);z-index:300;display:none;align-items:center;justify-content:center;padding:24px}
+  .success-overlay.show{display:flex}
+  .success-box{background:#fff;border-radius:20px;max-width:420px;width:100%;padding:44px 32px;text-align:center;animation:modalIn .4s ease-out}
+  .success-icon{width:80px;height:80px;background:var(--green-soft);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 20px}
+  .success-box h2{font-size:22px;font-weight:900;margin-bottom:8px;color:var(--green)}
+  .success-box p{color:var(--text-sec);font-size:14px;line-height:1.6}
+  .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:14px 28px;border-radius:12px;font-weight:700;font-size:14px;z-index:400;opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .footer{text-align:center;padding:40px 24px;color:var(--text-sec);font-size:12px}
+  .spinner{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  @keyframes fieldPulse{0%{box-shadow:0 0 0 0 rgba(245,166,35,.4)}50%{box-shadow:0 0 0 8px rgba(245,166,35,.15)}100%{box-shadow:0 0 0 0 rgba(245,166,35,0)}}
+  .field-highlight{border-color:var(--gold)!important;animation:fieldPulse 1s ease 2}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">VOTE 2026</div>
+  <h1>產區GP<span>最佳發明獎</span></h1>
+  <p>2025/4 - 2026/3 期間獲評 A 級 GP 影片，<br>由台北內部預選出 <strong>Top 10</strong> 進入最終決選。<br>請從中選出你心目中最佳的 <strong>3 部</strong> GP！</p>
+  <div class="period">📅 投票期間：2026/4/10 – 4/15（限時 6 天）</div>
+</div>
+
+<div class="rules-section"><div class="rules-card">
+  <div class="rule-item"><span class="icon">👥</span><div><strong>投票人員</strong><br>全產區、台北技術單位</div></div>
+  <div class="rule-item"><span class="icon">⚖️</span><div><strong>計分方式</strong><br>台北 50% + 產區 50%</div></div>
+  <div class="rule-item"><span class="icon">🗳️</span><div><strong>投票票數</strong><br>每人最多 3 票，不可重複</div></div>
+  <div class="rule-item"><span class="icon">🏆</span><div><strong>結果公告</strong><br>前三名於 2026 工務大會頒獎</div></div>
+</div></div>
+
+<div class="vote-bar" id="voteBar">
+  <div class="vote-counter"><span>已選</span><div class="counter-dots"><div class="counter-dot" id="dot1">1</div><div class="counter-dot" id="dot2">2</div><div class="counter-dot" id="dot3">3</div></div></div>
+  <button class="refresh-btn" onclick="refreshAllVideos()" title="如果影片顯示需要登入，登入後點此重新載入"><span class="spin">🔄</span> 重新載入影片</button>
+  <button class="vote-bar-btn" id="submitBtn" onclick="openModal()">提交投票</button>
+</div>
+
+<div class="voter-section"><div class="voter-card">
+  <div class="field"><label>👤 您的姓名</label><input type="text" id="voterName" placeholder="請輸入姓名"><div class="hint">請輸入帳號的英文姓名（例：EricShi）</div></div>
+  <div class="field"><label>🏭 廠區</label>
+    <select id="voterArea" onchange="updateFactories()">
+      <option value="">請選擇廠區</option>
+    </select>
+  </div>
+  <div class="field"><label>🏢 工廠</label>
+    <select id="voterFactory" disabled>
+      <option value="">請先選擇廠區</option>
+    </select>
+  </div>
+</div></div>
+
+<div class="instruction"><p>🏆 觀看影片後，點擊「投這一票」選出最佳 3 部 GP</p></div>
+
+<div class="cards-container" id="cardsContainer"></div>
+
+<div class="modal-overlay" id="modalOverlay"><div class="modal">
+  <h2>🗳️ 確認投票</h2><p class="subtitle" id="modalVoterInfo"></p>
+  <div class="selected-list" id="modalSelectedList"></div>
+  <div class="modal-actions">
+    <button class="btn-submit" id="confirmSubmitBtn" onclick="submitVote()">✅ 確認送出</button>
+    <button class="btn-cancel" onclick="closeModal()">返回修改</button>
+  </div>
+</div></div>
+
+<div class="success-overlay" id="successOverlay"><div class="success-box">
+  <div class="success-icon">✅</div><h2>投票成功！</h2><p>感謝您的參與，您的投票已成功記錄。<br>前三名將於 2026 工務大會公布！</p>
+</div></div>
+
+<div class="toast" id="toast"></div>
+<div class="footer"><p>2026 產區GP最佳發明獎 投票系統 — 聚陽實業</p></div>
+
+<script>
+// ================================================================
+//  ✏️【設定 1】Google Apps Script 網址
+// ================================================================
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzUKWG2tBsamBexyojlvRYwg9xptwSduc9wPKg0oMl8K6TLTk693XQQbPwkqBaR2rjj/exec";
+const FALLBACK_EMAIL = "ericyaya6610@gmail.com";
+
+// ================================================================
+//  ✏️【設定 2】廠區 → 工廠 對照表（來自 Excel）
+// ================================================================
+const FACTORY_MAP = {
+  "BGD-MK": ["BGD-MK1"],
+  "CAB-MK": ["CAB-HO","CAB-MK1","CAB-MK2","CAB-MK5","CAB-MK-HO"],
+  "CAB-MH": ["CAB-MH1","CAB-MH2","CAB-MH3","CAB-MH-HO"],
+  "IND-GLD": ["IND-GLD1","IND-GLD2","IND-GLD3","IND-GLD5","IND-GLD6","IND-GLD-HO","IND-HO"],
+  "IND-GLR1": ["IND-GLR1"],
+  "IND-GLR2": ["IND-GLR2"],
+  "IND-GLS": ["IND-GLS1","IND-GLS2","IND-GLS3","IND-GLS5","IND-GLS-HO"],
+  "IND-STL": ["IND-STL","IND-STL2","IND-STL3","IND-STL4","IND-STL-HO"],
+  "NVN-K": ["NVN-K-HO","NVN-MK1","NVN-MK2A","NVN-MK2B","NVN-MK2C","NVN-MK-HO"],
+  "NVN-W": ["NVN-MK3A","NVN-MK3B","NVN-MK3C","NVN-W-HO"],
+  "SLV-MK": ["SLV-MK"],
+  "SVN-LR": ["SVN-LR1","SVN-LR2","SVN-LR3","SVN-LR-HO"],
+  "SVN-TPL": ["SVN-TPLB","SVN-TPLC","SVN-TPL-HO"],
+  "台北": ["台北技術單位"]
+};
+
+// ================================================================
+//  ✏️【設定 3】10 部 GP 資料（正式版 — 來自 GP投票內容整理.xlsx）
+// ================================================================
+const GP_DATA = [
+  {id:"NVN MK1",title:"機器應用-花樣車壓下襬衩+套結",factory:"NVN",category:"機器應用",styleNo:"KOH #MA6UK100",efficiency:"單工序效益 ↑59%",quality:"品質 ↑",improve:"使用花樣車+自製輔具壓腳，一次性完成襬叉壓線+套結，降低工序技能度，穩定品質。",original:"原作工：各別使用平車和套結車進行下襬壓衩+套結，台北標準 = 61\"\n改善作工：應用電子花樣車 = 25\"",videoUrl:"https://www.youtube-nocookie.com/embed/fE5_Rfhq5dA",videoType:"iframe"},
+  {id:"NVN MK2B",title:"輔具應用-上拉鍊+門襟剪接貼條喇叭",factory:"NVN",category:"輔具應用",styleNo:"BNN #832112",efficiency:"單工序效益 ↑85.4%",quality:"品質 ↑",improve:"將5個工序(固襯+上表裡拉鍊+表裡貼邊拉鍊)應用褲頭車+雙喇叭輔具，一次性完成，減少剪接貼邊扭紋，確保外觀品質。\n輔具要點：上喇叭搭配兩組送料器，同時將表門襟和胖胖襯送入喇叭，上下送料同步。",original:"原作工：固雙表門襟胖胖襯+車表裡門襟拉鍊暗線+壓門襟拉鍊處明線+合大身暗線+壓合門襟，台北標準 = 322\"\n改善作工：應用褲頭車+喇叭 = 47\"",videoUrl:"https://www.youtube-nocookie.com/embed/PiwtQEsUi0c",videoType:"iframe"},
+  {id:"NVN MK3A",title:"機器應用-自動量剪滾條+氣動收料裝置",factory:"NVN",category:"機器應用",styleNo:"ONY #868157_SP26",efficiency:"單工序效益 ↑20%",quality:"",improve:"自製熱切帶機上加裝氣動裝置功能，達到自動送料+收料，節省人力。",original:"原作工：以手工搭配TK裝置進行量剪 = 10\"\n改善作工：自動量剪滾條+氣動收料裝置 = 8\"",videoUrl:"https://www.youtube-nocookie.com/embed/DE0CB3RhGGk",videoType:"iframe"},
+  {id:"NVN MK3C",title:"輔具應用-拷袋布模板",factory:"NVN",category:"輔具應用",styleNo:"GU #60236H004A",efficiency:"單工序效益 ↑40%",quality:"品質 ↑",improve:"將壓腳改為滾輪壓腳，應用2顆滾輪帶動模板，使袋布跟著模板軌道自動車縫。減少口袋大小品質問題，確保袋型一致性。",original:"原作工：依照袋型拷弧型袋布 = 15\"\n改善作工：利用模板+滾輪壓腳輔具 = 9\"",videoUrl:"https://www.youtube-nocookie.com/embed/DLPbBu_n6Tk",videoType:"iframe"},
+  {id:"SVN LR1",title:"輔具應用-大弧度領座剪接模板",factory:"SVN",category:"輔具應用",styleNo:"OKY #FOA406810_FA25",efficiency:"",quality:"品質 ↑",improve:"依照大弧度領型設計兩段式蓋板，採分段擺片與車縫方式，確保品質一致性，降低車縫難度。",original:"原作工：車表裡香蕉領座暗線，台北標準 = 30\"\n改善作工：應用模板 = 30\"",videoUrl:"https://www.youtube-nocookie.com/embed/l_8iix7ppm4",videoType:"iframe"},
+  {id:"SVN LR1-②",title:"輔具應用-旋轉式模板固定口袋拉鍊車庫",factory:"SVN",category:"輔具應用",styleNo:"TGT #0L3M95",efficiency:"單工序效益 ↑77.5%",quality:"",improve:"套結車加裝延伸桌板+自製旋轉式模板，利用機器車縫時間同步擺放裁片，提升機器稼動率/產能。",original:"原作工：使用套結車固定口袋拉鍊車庫 = 40\"\n改善作工：應用套結車+旋轉模板 = 9\"",videoUrl:"https://www.youtube-nocookie.com/embed/_tHoUy5PWPE",videoType:"iframe"},
+  {id:"IND GLD2",title:"輔具應用-口袋L型縫",factory:"IND",category:"輔具應用",styleNo:"CMT #FSB0003",efficiency:"單工序效益 ↑47.6%",quality:"",improve:"模板設計兩段式蓋板，採分段擺片與車縫方式，且利用壓板止點剪牙口，確保口袋L型外觀品質一致性。",original:"原作工：合直向剪接+剪牙口+拷直向剪接縫份，台北標準 = 84\"\n改善作工：應用模板 = 44\"",videoUrl:"https://www.youtube-nocookie.com/embed/baGBFXU1mVY",videoType:"iframe"},
+  {id:"IND GLR1",title:"輔具應用-固定V領交叉重疊+上領一段",factory:"IND",category:"輔具應用",styleNo:"GAP #760324",efficiency:"單工序效益 ↑58.8%",quality:"品質 ↑",improve:"使用模板合併多個工序，一次性完成車縫，降低工序技能度，提升效率/穩定品質。",original:"原作工：固定V領交叉重疊+做上領記號+平車上V領一段，台北標準 = 80\"\n改善作工：應用模板 = 33\"",videoUrl:"https://www.youtube-nocookie.com/embed/F5FvqFcPSjM",videoType:"iframe"},
+  {id:"IND STL1",title:"輔具應用-剪接腰頭雙層喇叭",factory:"IND",category:"輔具應用",styleNo:"GU #60233F010A",efficiency:"單工序效益 ↑90.8%",quality:"",improve:"應用平雙針車+自製上下層喇叭，節省腰頭燙型時間+上腰頭反縫暗線時間。\n自製泡棉檔邊+傾斜式黃板，控制兩側裁片勻稱送入壓腳車縫，完成成品腰剪接寬度一致性，提升產能效率。",original:"原作工：剪接腰頭，包光做法：腰頭燙型上腰頭反縫暗線壓腰頭明線，台北標準 = 545\"\n改善作工：雙針車+喇叭一次性完成 = 50\"",videoUrl:"https://www.youtube-nocookie.com/embed/ZClmGxVi6dI",videoType:"iframe"},
+  {id:"CHN-JY",title:"輔具應用-上前立拉鍊+合前襠+壓J型模板",factory:"CHN",category:"輔具應用",styleNo:"GU #60226H005B",efficiency:"單工序效益 ↑5.8%",quality:"品質 ↑",improve:"應用CNC+複合式模板，完成上前立拉鍊工序，降低工序等級，新手也可以操作。\n符合客人品質要求，提升產能。",original:"原作工：個別用平車完成前門襟作工，台北標準 = 95.5\"\n改善作工：應用模板合併工序 = 90\"",videoUrl:"https://www.youtube-nocookie.com/embed/MnPoe50b0Vg",videoType:"iframe"}
+];
+
+let selectedGPs = new Set(), isSubmitting = false;
+
+// 初始化廠區下拉
+function initAreaDropdown() {
+  const sel = document.getElementById('voterArea');
+  Object.keys(FACTORY_MAP).forEach(area => {
+    const opt = document.createElement('option');
+    opt.value = area;
+    opt.textContent = area;
+    sel.appendChild(opt);
+  });
+}
+
+// 連動更新工廠下拉
+function updateFactories() {
+  const area = document.getElementById('voterArea').value;
+  const fSel = document.getElementById('voterFactory');
+  fSel.innerHTML = '';
+  if (!area) {
+    fSel.innerHTML = '<option value="">請先選擇廠區</option>';
+    fSel.disabled = true;
+    return;
+  }
+  fSel.disabled = false;
+  fSel.innerHTML = '<option value="">請選擇工廠</option>';
+  (FACTORY_MAP[area] || []).forEach(f => {
+    const opt = document.createElement('option');
+    opt.value = f;
+    opt.textContent = f;
+    fSel.appendChild(opt);
+  });
+}
+
+function formatEff(text) {
+  return text.split('\n').map(line => {
+    if (line.startsWith('原作工')) {
+      const parts = line.split('：');
+      return `<div class="eff-line"><span class="eff-label">　<span class="c-red">原</span>作工：</span><span class="eff-value">${parts.slice(1).join('：')}</span></div>`;
+    } else if (line.startsWith('改善作工')) {
+      const parts = line.split('：');
+      return `<div class="eff-line"><span class="eff-label"><span class="c-green">改善</span>作工：</span><span class="eff-value">${parts.slice(1).join('：')}</span></div>`;
+    }
+    return `<div style="margin-bottom:2px">${line}</div>`;
+  }).join('');
+}
+
+function renderCards() {
+  document.getElementById('cardsContainer').innerHTML = GP_DATA.map((g, i) => `
+    <div class="gp-card" id="card-${i}">
+      <div class="gp-card-header"><span class="gp-id">${g.id}</span><span class="gp-title">${g.title}</span></div>
+      <div class="gp-card-body">
+        <div class="gp-meta">
+          ${g.factory?`<span class="gp-meta-tag factory">${g.factory}</span>`:''}
+          ${g.category?`<span class="gp-meta-tag style">${g.category}</span>`:''}
+          ${g.styleNo?`<span class="gp-meta-tag style-no">${g.styleNo}</span>`:''}
+        </div>
+        <div class="gp-video-container" id="video-container-${i}">
+          ${g.videoUrl?(g.videoType==='direct'?`<video controls preload="metadata"><source src="${g.videoUrl}" type="video/mp4"></video>`:`<iframe data-src="${g.videoUrl}" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`):`<div class="video-placeholder"><div class="icon">🎬</div><p>影片尚未設定</p></div>`}
+        </div>
+        <div class="gp-desc-grid">
+          <div class="desc-block"><div class="label">🔧 改善說明</div><div class="content">${g.improve.replace(/\n/g,'<br>')}</div></div>
+          <div class="desc-block"><div class="label">📋 效益分析</div><div class="content">${formatEff(g.original)}</div><div class="efficiency-tags">${g.efficiency?`<span class="gp-meta-tag efficiency">${g.efficiency}</span>`:''}${g.quality?`<span class="gp-meta-tag efficiency">${g.quality}</span>`:''}</div></div>
+        </div>
+        <button class="vote-toggle" id="vote-${i}" onclick="toggleVote(${i})">
+          <span class="checkmark"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7L5.5 10.5L12 3.5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="vote-label">投這一票</span>
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleVote(i){if(isSubmitting)return;if(selectedGPs.has(i))selectedGPs.delete(i);else{if(selectedGPs.size>=3){showToast('最多只能選 3 個 GP！');return}selectedGPs.add(i)}updateUI()}
+
+function updateUI(){const n=selectedGPs.size;for(let i=1;i<=3;i++)document.getElementById(`dot${i}`).classList.toggle('filled',i<=n);const b=document.getElementById('submitBtn');b.classList.toggle('active',n===3);b.textContent=n===3?'提交投票 →':`已選 ${n}/3`;GP_DATA.forEach((_,i)=>{const c=document.getElementById(`card-${i}`),v=document.getElementById(`vote-${i}`),s=selectedGPs.has(i);c.classList.toggle('selected',s);v.classList.toggle('voted',s);v.querySelector('.vote-label').textContent=s?'已選取 ✓':'投這一票';v.classList.toggle('disabled',!s&&n>=3)})}
+
+function highlightField(id){var el=document.getElementById(id);el.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){el.classList.add('field-highlight');el.focus();setTimeout(function(){el.classList.remove('field-highlight')},2200)},400)}
+function openModal(){const nm=document.getElementById('voterName').value.trim(),area=document.getElementById('voterArea').value,fc=document.getElementById('voterFactory').value;if(!nm){highlightField('voterName');return}if(!area){highlightField('voterArea');return}if(!fc){highlightField('voterFactory');return}if(selectedGPs.size!==3){showToast('請選滿 3 個 GP');return}document.getElementById('modalVoterInfo').textContent=`${nm}（${area} / ${fc}）的投票`;const s=[...selectedGPs];document.getElementById('modalSelectedList').innerHTML=s.map((x,r)=>`<div class="selected-item"><span class="rank">${r+1}</span><span>${GP_DATA[x].id} — ${GP_DATA[x].title}</span></div>`).join('');document.getElementById('modalOverlay').classList.add('show')}
+
+function closeModal(){document.getElementById('modalOverlay').classList.remove('show')}
+
+async function submitVote(){if(isSubmitting)return;isSubmitting=true;const btn=document.getElementById('confirmSubmitBtn');btn.innerHTML='<span class="spinner"></span> 送出中...';btn.disabled=true;const nm=document.getElementById('voterName').value.trim(),area=document.getElementById('voterArea').value,fc=document.getElementById('voterFactory').value,sel=[...selectedGPs],ts=new Date().toLocaleString('zh-TW');
+const data={timestamp:ts,name:nm,area:area,factory:fc,gp1_id:GP_DATA[sel[0]].id,gp1_title:GP_DATA[sel[0]].title,gp2_id:GP_DATA[sel[1]].id,gp2_title:GP_DATA[sel[1]].title,gp3_id:GP_DATA[sel[2]].id,gp3_title:GP_DATA[sel[2]].title};
+if(GOOGLE_SCRIPT_URL&&!GOOGLE_SCRIPT_URL.includes("在此貼上")){try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});closeModal();document.getElementById('successOverlay').classList.add('show');return}catch(e){console.error('Script failed',e)}}
+const subj=encodeURIComponent(`【GP投票】${area}-${fc} - ${nm}`),body=encodeURIComponent(`【2026 產區GP最佳發明獎 投票】\n投票人：${nm}\n廠區：${area}\n工廠：${fc}\n時間：${ts}\n\n最佳3部GP：\n`+sel.map((x,r)=>`${r+1}. ${GP_DATA[x].id} — ${GP_DATA[x].title}`).join('\n'));window.location.href=`mailto:${FALLBACK_EMAIL}?subject=${subj}&body=${body}`;closeModal();showToast('已開啟 Email，請點擊送出！');isSubmitting=false;btn.innerHTML='✅ 確認送出';btn.disabled=false}
+
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+window.addEventListener('scroll',()=>document.getElementById('voteBar').classList.toggle('scrolled',window.scrollY>100));
+
+// INIT
+initAreaDropdown();
+renderCards();
+updateUI();
+
+// ===== Lazy Loading（延遲載入影片）=====
+const lazyObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const iframe = entry.target.querySelector('iframe[data-src]');
+      if (iframe && !iframe.src) {
+        iframe.src = iframe.getAttribute('data-src');
+      }
+      lazyObserver.unobserve(entry.target);
+    }
+  });
+}, { rootMargin: '200px 0px' }); // 提前 200px 開始載入
+
+document.querySelectorAll('.gp-video-container').forEach(container => {
+  if (container.querySelector('iframe[data-src]')) {
+    lazyObserver.observe(container);
+  }
+});
+
+// ===== 一鍵刷新所有影片 =====
+function refreshAllVideos() {
+  const iframes = document.querySelectorAll('.gp-video-container iframe');
+  let count = 0;
+  iframes.forEach(iframe => {
+    const src = iframe.getAttribute('data-src') || iframe.src;
+    if (src) {
+      iframe.src = '';
+      setTimeout(() => { iframe.src = src; }, 100);
+      count++;
+    }
+  });
+  showToast(`已重新載入 ${count} 部影片`);
+}
+</script>
+</body>
+</html>
